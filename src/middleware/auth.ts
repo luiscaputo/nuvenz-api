@@ -22,3 +22,15 @@ export const createUser = async (
   });
   await showError(req, res, next, schema);
 };
+
+export const login = async (
+  req: Request<IUsers>,
+  res: Response<AppResponse<Users[]>>,
+  next: NextFunction,
+) => {
+  const schema = Yup.object().shape({
+    nickname: Yup.string().required('Informe seu nickname, é obrigatório!'),
+    password: Yup.string().required('Informe sua senha, é obrigatório!'),
+  });
+  await showError(req, res, next, schema);
+};
