@@ -4,14 +4,14 @@ import { hash } from 'bcrypt';
 
 export interface IUsers {
   nickname: string;
-  password: string;
+  senha: string;
 }
 
 export default class CreateUsersServices {
-  async execute({ nickname, password }: IUsers) {
+  async execute({ nickname, senha }: IUsers) {
     try {
       const usersRepository = getCustomRepository(UsersRepository);
-      const passwordHash = await hash(password, 8);
+      const passwordHash = await hash(senha, 8);
       const createUser = usersRepository.create({
         nickname,
         password: passwordHash,

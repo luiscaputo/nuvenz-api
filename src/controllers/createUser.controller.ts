@@ -11,7 +11,7 @@ export default class CreateUserController {
     response: Response<AppResponse<Users[]>>,
   ) {
     try {
-      const { nickname, password } = request.body;
+      const { nickname, senha } = request.body;
       const usersRepository = getCustomRepository(UsersRepository);
       const createUserService = new CreateUsersServices();
       const verifyNickName = await usersRepository.find({
@@ -25,7 +25,7 @@ export default class CreateUserController {
       }
       const creatingUser = await createUserService.execute({
         nickname,
-        password,
+        senha,
       });
       return response.status(200).json({ success: true, data: creatingUser });
     } catch (err) {
