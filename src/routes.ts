@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { isAuthenticated } from './middleware/isAuthenticated';
 import createUserRoutes from './routes/users.routes';
 
 const routes = Router();
@@ -16,5 +17,7 @@ routes.get('/', (request, response) => {
 // UnAuth Routes
 routes.use(createUserRoutes);
 // Auth Routes
+routes.use(isAuthenticated);
+
 // Exporting routes
 export default routes;

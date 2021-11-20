@@ -4,31 +4,36 @@ import UsersRepository from '../repositories/users.repository';
 import { getCustomRepository } from 'typeorm';
 import { IUsers } from './users.service';
 
+type UserRequest = {
+  nickname: string;
+  senha: string;
+};
+
 export default class LoginService {
-  async execute({ nickname, senha }: IUsers) {
+  async execute({ nickname, senha }: UserRequest): Promise<any> {
     try {
       const usersRepository = getCustomRepository(UsersRepository);
-      const verifyNickName = await usersRepository.findOne({
-        where: { nickname },
-      });
-      if (!verifyNickName) {
-        return 'Nickname/password inválido.';
+
+      const user = await usersRepository.findOne({ where: { nickname } });
+
+      if (!user) {
+        return new Error('Nickname/password inválido.');
       }
-      const passwordCompare = await compare(senha, verifyNickName.password);
+
+      const passwordCompare = await compare(senha, user.password);
+
       if (!passwordCompare) {
-        return 'Nickname/password inválido.';
+        return new Error('Nickname/password inválido.');
       }
-      const userId = verifyNickName.id;
+
+      const userId = user.id;
       const token = sign(
         {
-          user: {
-            nickname: verifyNickName.nickname,
-            id: verifyNickName.id,
-          },
+          id: userId,
         },
         process.env.JW_SECRET,
         {
-          subject: '',
+          subject: user.id.toString(),
           expiresIn: '1d',
         },
       );
