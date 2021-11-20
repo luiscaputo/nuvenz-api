@@ -1,4 +1,4 @@
-import UsersRepository from 'repositories/users.repository';
+import UsersRepository from '../repositories/users.repository';
 import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcrypt';
 
@@ -7,20 +7,15 @@ export interface IUsers {
   password: string;
 }
 
-export default class UsersServices {
+export default class CreateUsersServices {
   async execute({ nickname, password }: IUsers) {
     try {
       const usersRepository = getCustomRepository(UsersRepository);
-      const verifyExistsNickname = await usersRepository.find({
-        where: { nickname },
-      });
-      if (verifyExistsNickname) {
-        return 'Nickname existente. Tente outro nickname.';
-      }
       const passwordHash = await hash(password, 8);
       const createUser = usersRepository.create({
         nickname,
         password: passwordHash,
+        status: 'Active',
       });
       await usersRepository.save(createUser);
       return createUser;

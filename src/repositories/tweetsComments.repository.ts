@@ -1,4 +1,4 @@
-import { TweetsComments } from 'models/TweetsComments';
+import { TweetsComments } from '../models/TweetsComments';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(TweetsComments)

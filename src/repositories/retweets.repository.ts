@@ -1,4 +1,4 @@
-import { Retweets } from 'models/Retweets';
+import { Retweets } from '../models/Retweets';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(Retweets)
