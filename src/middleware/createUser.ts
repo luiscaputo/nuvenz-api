@@ -11,8 +11,14 @@ export const createUser = async (
   next: NextFunction,
 ) => {
   const schema = Yup.object().shape({
-    nickname: Yup.string().required('Informe seu nickname, é obrigatório!'),
-    password: Yup.string().required('Informe sua senha, é obrigatório!'),
+    nickname: Yup.string()
+      .required('Informe seu nickname, é obrigatório!')
+      .min(8, 'Nickname demasiado curto.')
+      .max(16, 'Nickname demasiado extenso.'),
+    password: Yup.string()
+      .required('Informe sua senha, é obrigatório!')
+      .min(8, 'Password demasiada curta. Coloque uma mais segura.')
+      .max(16, 'Password demasiada longa. Ainda pode esquecer.'),
   });
   await showError(req, res, next, schema);
 };
