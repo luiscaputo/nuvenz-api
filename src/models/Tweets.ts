@@ -42,6 +42,12 @@ export class Tweets {
   })
   updatedAt: Date | null;
 
+  @Column("int", { name: "totalLike", nullable: true })
+  totalLike: number | null;
+
+  @Column("int", { name: "totalUnlike", nullable: true })
+  totalUnlike: number | null;
+
   @OneToMany(() => Retweets, (retweets) => retweets.tweetRetweeted)
   retweets: Retweets[];
 

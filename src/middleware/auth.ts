@@ -30,7 +30,7 @@ export const login = async (
 ) => {
   const schema = Yup.object().shape({
     nickname: Yup.string().required('Informe seu nickname, é obrigatório!'),
-    password: Yup.string().required('Informe sua senha, é obrigatório!'),
+    senha: Yup.string().required('Informe sua senha, é obrigatório!'),
   });
   await showError(req, res, next, schema);
 };

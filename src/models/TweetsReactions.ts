@@ -8,9 +8,11 @@ import {
 } from "typeorm";
 import { Tweets } from "./Tweets";
 import { Users } from "./Users";
+import { ReactionsType } from "./ReactionsType";
 
 @Index("tweetId", ["tweetId"], {})
 @Index("userReactedId", ["userReactedId"], {})
+@Index("reactionTypeId", ["reactionTypeId"], {})
 @Entity("tweetsReactions", { schema: "nuvenz_api" })
 export class TweetsReactions {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
@@ -18,12 +20,6 @@ export class TweetsReactions {
 
   @Column("int", { name: "tweetId", nullable: true })
   tweetId: number | null;
-
-  @Column("int", { name: "totalLike", nullable: true })
-  totalLike: number | null;
-
-  @Column("int", { name: "totalUnlike", nullable: true })
-  totalUnlike: number | null;
 
   @Column("int", { name: "userReactedId", nullable: true })
   userReactedId: number | null;
@@ -45,6 +41,9 @@ export class TweetsReactions {
   })
   updatedAt: Date | null;
 
+  @Column("int", { name: "reactionTypeId", nullable: true })
+  reactionTypeId: number | null;
+
   @ManyToOne(() => Tweets, (tweets) => tweets.tweetsReactions, {
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
@@ -58,4 +57,12 @@ export class TweetsReactions {
   })
   @JoinColumn([{ name: "userReactedId", referencedColumnName: "id" }])
   userReacted: Users;
+
+  @ManyToOne(
+    () => ReactionsType,
+    (reactionsType) => reactionsType.tweetsReactions,
+    { onDelete: "RESTRICT", onUpdate: "RESTRICT" }
+  )
+  @JoinColumn([{ name: "reactionTypeId", referencedColumnName: "id" }])
+  reactionType: ReactionsType;
 }
