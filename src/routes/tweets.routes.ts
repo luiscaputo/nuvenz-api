@@ -8,6 +8,7 @@ const tweetsControllers = new TweetsController();
 
 router.post('/tweet', tweetsControllers.CreateTweet);
 router.post('/tweet/like', tweetsControllers.LikeTweet);
+router.post('/tweet/unLike', tweetsControllers.UnLikeTweet);
 router.get('/tweets', tweetsControllers.TweetsFeed);
 router.delete('/tweet/:id', tweetsControllers.RemoveTweet);
 

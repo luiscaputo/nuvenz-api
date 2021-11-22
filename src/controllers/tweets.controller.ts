@@ -89,4 +89,19 @@ export default class TweetsController {
         .json({ success: false, message: err.message });
     }
   }
+  async UnLikeTweet(
+    request: Request<ITweetLike>,
+    response: Response<AppResponse<string>>,
+  ) {
+    try {
+      const { tweetId, userId } = request.body;
+      const tweetsSevices = new TweetsServices();
+      const UnlikeTweet = await tweetsSevices.unlikeTweet({ tweetId, userId });
+      return response.status(200).json({ success: true, message: UnlikeTweet });
+    } catch (err) {
+      return response
+        .status(500)
+        .json({ success: false, message: err.message });
+    }
+  }
 }

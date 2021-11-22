@@ -73,15 +73,15 @@ export default class TweetsServices {
         .createQueryBuilder('tweets')
         .select('Max(tweets.totallike)', 'max')
         .getRawOne();
-
+      const newTotal = parseInt(totallike['max']) + 1;
       await tweetRepository
         .createQueryBuilder()
         .update(Tweets)
         .set({
-          totalLike: totallike + 1,
+          totalLike: newTotal,
         })
-        .where('userReactedId = :userReactedId', {
-          userReactedId: userId,
+        .where({
+          id: tweetId,
         })
         .execute();
       await tweetReactionsRepository
@@ -95,24 +95,18 @@ export default class TweetsServices {
           status: 'Active',
         })
         .execute();
-      return totallike;
+      return 'Gosto.';
     } catch (err) {
       return err.message;
     }
   }
-  async unlikeTweet({ tweetId, userId }: ITweet) {
+  async unlikeTweet({ tweetId, userId }: ITweetLike) {
     try {
       const tweetReactionsRepository = getCustomRepository(
         TweetsReactionsRepository,
       );
       const tweetRepository = getCustomRepository(TweetsRepository);
-      const usersRepository = getCustomRepository(UsersRepository);
 
-      const verifyUser = await usersRepository.findOne(userId);
-
-      if (verifyUser) {
-        return new Error('Usuário Inexistente.');
-      }
       const isUserReacted = await tweetReactionsRepository.findOne({
         where: { userReactedId: userId },
       });
@@ -130,14 +124,15 @@ export default class TweetsServices {
         .select('Max(tweets.totalUnlike)', 'max')
         .getRawOne();
 
+      const newTotal = parseInt(totalUnlike['max']) + 1;
       await tweetRepository
         .createQueryBuilder()
         .update(Tweets)
         .set({
-          totalLike: totalUnlike - 1,
+          totalUnlike: newTotal,
         })
-        .where('userReactedId = :userLoggedId', {
-          userReactedId: userId,
+        .where({
+          id: tweetId,
         })
         .execute();
       await tweetReactionsRepository
@@ -151,7 +146,7 @@ export default class TweetsServices {
           status: 'Active',
         })
         .execute();
-      return 'Tweet Unliked!';
+      return 'Não Gosto.';
     } catch (err) {
       return err.message;
     }
