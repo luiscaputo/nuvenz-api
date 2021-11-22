@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { isAuthenticated } from './middleware/isAuthenticated';
 import createUserRoutes from './routes/users.routes';
 import tweetsRoutes from './routes/tweets.routes';
+import retweetRoutes from './routes/retweet.routes';
 
 const routes = Router();
 // Base Routes
@@ -20,5 +21,6 @@ routes.use(createUserRoutes);
 // Auth Routes
 routes.use(isAuthenticated);
 routes.use(tweetsRoutes);
+routes.use(retweetRoutes);
 // Exporting routes
 export default routes;
