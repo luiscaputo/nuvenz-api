@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: nuvez-api
+    command: yarn dev
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/usr/app
+  nuvez-db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:e
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSSWORD: nuvez-api
+      MYSQL_DATABASE: nuvez-api
+      MYSQL_USER: root
+      MYSQL_PASSWORD:
+    container_name: nuvez-db
+volumes:
+  db_data: {}
